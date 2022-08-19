@@ -13,9 +13,13 @@ atr2jac file.atr file.car [-c] [-d] [-128|-256|-512]
 
 CAR  format "75" resized to Atarimax 1MB(new) for emulators
 -128  binary format for 128kB flash
+
 -256  binary format for 256kB flash
+
 -512  binary format for 512kB flash
+
 -c  remap JSR & JMP with JDSKINT / DSKINT
+
 -d  path DOS II+/D
 
 Examples:
