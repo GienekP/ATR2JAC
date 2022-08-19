@@ -10,6 +10,7 @@ ATR Formats:
 
 use:
 atr2jac file.atr file.car [-c] [-d] [-128|-256|-512]
+
 CAR  format "75" resized to Atarimax 1MB(new) for emulators
 -128  binary format for 128kB flash
 -256  binary format for 256kB flash
