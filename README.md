@@ -1,4 +1,4 @@
-# ATR2JEC
+# ATR2JAC
 Convert ATARI ATR-files to CAR J(atari)Cart format
 
 ATR Formats:
