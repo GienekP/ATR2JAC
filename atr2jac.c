@@ -98,9 +98,6 @@ unsigned int assignFlash(unsigned int atrsize, U8 *flash)
 	unsigned int ret;
 	if (*flash==FLASHAUTO)
 	{
-		/*if (atrsize<=(CAR128-LDRSIZE-5*128)) {*flash=FLASH128K;}
-		else if (atrsize>(CAR256-LDRSIZE-5*128)) {*flash=FLASH512K;}
-		else {*flash=FLASH256K;}*/
 		printf("CAR: Format 75 (0x4B) Atarimax 1 MB Flash cartridge (new)\n");		
 	}
 	else
