@@ -66,24 +66,7 @@ int main( int argc, char* argv[] )
 			};
 		};	
 		fclose(pf);
-	};/*
-	printf("Bigest %isectors\n",maxsec256);
-	pf=fopen("Bigest.atr","wb");
-	if (pf)
-	{
-		unsigned char atrh[16]={0x96,0x02,0xE8,0x1E,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-		fwrite(atrh,sizeof(unsigned char),sizeof(atrh),pf);
-		for (i=0; i<128; i++) {fputc(0x01,pf);};
-		for (i=0; i<128; i++) {fputc(0x02,pf);};
-		for (i=0; i<128; i++) {fputc(0x03,pf);};		
-		for (i=4*256; i<((maxsec256+1)*256); i++)
-		{
-			unsigned char m;
-			m=((i>>8)&0xFF);
-			fputc(m,pf);
-		};
-		fclose(pf);
-	};*/
+	};
 	printf("\n");
 	return 0;
 }
