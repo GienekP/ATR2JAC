@@ -9,18 +9,21 @@ ATR Formats:
 - CUSTOM (maximum 1007616 bytes)
 
 use:
+
 atr2jac file.atr file.car [-c] [-d] [-128|-256|-512]
 
-CAR  format "75" resized to Atarimax 1MB(new) for emulators
--128  binary format for 128kB flash
+CAR  format "75" is resized to Atarimax 1MB(new) for emulators
 
--256  binary format for 256kB flash
+-128 binary format for 128kB flash
 
--512  binary format for 512kB flash
+-256 binary format for 256kB flash
 
--c  remap JSR & JMP with JDSKINT / DSKINT
+-512 binary format for 512kB flash
 
--d  path DOS II+/D
+-c remap JSR & JMP with JDSKINT / DSKINT
+
+-d path DOS II+/D
+
 
 Examples:
 
