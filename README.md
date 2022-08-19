@@ -6,7 +6,7 @@ ATR Formats:
 - 256 sector
 - SD
 - DD
-- CUSTOM (maximum 1007616 bytes)
+- CUSTOM (maximum 499712 bytes)
 
 use:
 
