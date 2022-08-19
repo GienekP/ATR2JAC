@@ -1,5 +1,5 @@
 # ATR2JEC
-Convert ATARI ATR-files to J(atari)Cart format
+Convert ATARI ATR-files to CAR J(atari)Cart format
 
 ATR Formats:
 - 128 sector
