@@ -17,8 +17,6 @@ typedef unsigned char U8;
 #define SEC256 2
 #define OLDADDR 0
 #define NEWADDR 1
-#define ORYGDOS 0
-#define PATCHDOS 1
 /*--------------------------------------------------------------------*/
 #define CAR128 (128*1024)
 #define CAR256 (256*1024)
@@ -98,6 +96,9 @@ unsigned int assignFlash(unsigned int atrsize, U8 *flash)
 	unsigned int ret;
 	if (*flash==FLASHAUTO)
 	{
+		/*if (atrsize<=(CAR128-LDRSIZE-5*128)) {*flash=FLASH128K;}
+		else if (atrsize>(CAR256-LDRSIZE-5*128)) {*flash=FLASH512K;}
+		else {*flash=FLASH256K;}*/
 		printf("CAR: Format 75 (0x4B) Atarimax 1 MB Flash cartridge (new)\n");		
 	}
 	else
@@ -194,35 +195,6 @@ void checkXINT(U8 *atrdata, U8 mode)
 				printf(" JMP SIOINT ; 0x%06X 4C 3 C9 -> 4C 00 01\n",i+16);
 			};			
 		};	
-	};
-}
-/*--------------------------------------------------------------------*/
-void repairDOSIId(U8 *atrdata, U8 patch)
-{
-	const unsigned char search[7]={0x20,0xD0,0x1A,0x29,0x20,0xF0,0x02};
-	const unsigned int siz=sizeof(search);
-	unsigned int i,j;
-	for (i=0; i<ATRMAX-siz; i++)
-	{
-		unsigned int test=1;
-		for (j=0; j<siz; j++)
-		{
-			if (atrdata[i+j]!=search[j]) {j=siz; test=0;};
-		};
-		if (test==1)
-		{
-			printf("Find DOS II+/D on 256sectors disk");
-			if (patch==PATCHDOS)
-			{
-				printf(" and add patch.\n");
-				atrdata[i+5]=0;
-			}
-			else
-			{
-				printf("\n");
-			};
-			i=ATRMAX;
-		};
 	};
 }
 /*--------------------------------------------------------------------*/
@@ -366,13 +338,12 @@ U8 saveCAR(const char *filename, U8 *data, unsigned int sum, U8 flash)
 	return ret;
 }
 /*--------------------------------------------------------------------*/
-void atr2jac(const char *atrfn, const char *carfn, U8 m, U8 f, U8 d)
+void atr2jac(const char *atrfn, const char *carfn, U8 m, U8 f)
 {
 	U8 atrdata[ATRMAX];
 	U8 cardata[CARMAX];
 	U8 mode=m;
 	U8 flash=f;
-	U8 dos=d;
 	U8 sector;
 	unsigned int atrsize;
 	unsigned int carsize;
@@ -395,7 +366,6 @@ void atr2jac(const char *atrfn, const char *carfn, U8 m, U8 f, U8 d)
 			else
 			{
 				printf("Sector: 256\n");
-				repairDOSIId(atrdata,dos);
 				sum=buildCar256(starter256j_bin,starter256j_bin_len,atrdata,atrsize,cardata,carsize,type);
 			};
 			if (saveCAR(carfn,cardata,sum,flash))
@@ -442,63 +412,38 @@ void modeSel(const char *str, U8 *mode)
 	};
 }
 /*--------------------------------------------------------------------*/
-void patchDOS(const char *str, U8 *dos)
-{
-	if ((str[0]=='-') && ((str[1]=='d') || (str[1]=='D')))
-	{
-		*dos=PATCHDOS;
-	};	
-}
-/*--------------------------------------------------------------------*/
 int main( int argc, char* argv[] )
 {	
 	U8 mode=OLDADDR;
 	U8 flash=FLASHAUTO;
-	U8 dos=ORYGDOS;
 	printf("ATR2JAC - ver: %s\n",__DATE__);
 	if (argc==3)
 	{
-		atr2jac(argv[1],argv[2],mode,flash,dos);
+		atr2jac(argv[1],argv[2],mode,flash);
 	}
 	else if (argc==4)
 	{
 		modeSel(argv[3],&mode);
 		flashSize(argv[3],&flash);
-		patchDOS(argv[3],&dos);
-		atr2jac(argv[1],argv[2],mode,flash,dos);
+		atr2jac(argv[1],argv[2],mode,flash);
 	}
 	else if (argc==5)
 	{
 		modeSel(argv[3],&mode);
 		flashSize(argv[3],&flash);
-		patchDOS(argv[3],&dos);
 		modeSel(argv[4],&mode);
 		flashSize(argv[4],&flash);
-		patchDOS(argv[4],&dos);
-		atr2jac(argv[1],argv[2],mode,flash,dos);
+		atr2jac(argv[1],argv[2],mode,flash);
 	}
-	else if (argc==6)
-	{
-		modeSel(argv[3],&mode);
-		flashSize(argv[3],&flash);
-		patchDOS(argv[3],&dos);
-		modeSel(argv[4],&mode);
-		flashSize(argv[4],&flash);
-		patchDOS(argv[4],&dos);
-		modeSel(argv[5],&mode);
-		flashSize(argv[5],&flash);
-		patchDOS(argv[5],&dos);
-		atr2jac(argv[1],argv[2],mode,flash,dos);
-	} else
+	else
 	{
 		printf("(c) GienekP\n");
-		printf("use:\natr2jac file.atr file.car [-c] [-d] [-128|-256|-512]\n");
+		printf("use:\natr2jac file.atr file.car [-c] [-128|-256|-512]\n");
 		printf("CAR  format \"75\" resized to Atarimax 1MB(new) for emulators\n");
 		printf("-128  binary format for 128kB flash\n");
 		printf("-256  binary format for 256kB flash\n");
 		printf("-512  binary format for 512kB flash\n");
 		printf("-c  remap JSR & JMP with JDSKINT / DSKINT\n");
-		printf("-d  path DOS II+/D\n");		
 	};
 	printf("\n");
 	return 0;
