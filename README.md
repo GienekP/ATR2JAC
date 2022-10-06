@@ -22,8 +22,6 @@ CAR  format "75" is resized to Atarimax 1MB(new) for emulators
 
 -c remap JSR & JMP with JDSKINT / DSKINT
 
--d path DOS II+/D
-
 
 Examples:
 
@@ -42,12 +40,7 @@ c) convert ATR to CAR and change all jumps to DSKINT ROM function
 atr2jac game.atr game.car -c
 
 
-d) convert ATR to CAR and upgrade DOS II+/D SD/DD test function
+e) convert ATR to binary for FLASH 256kB
 
-atr2jac game.atr game.car -d
-
-
-e) convert ATR to binary for FLASH 256kB and change jumps and upgrade DOS II+/D :)
-
-atr2jac game.atr game.bin -c -d -256
+atr2jac game.atr game.bin -c -256
 
